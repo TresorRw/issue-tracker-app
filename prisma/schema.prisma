@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Issue {
+  id          String        @id @default(uuid())
+  title       String
+  description String        @db.Text()
+  status      IssueStatus   @default(OPEN)
+  category    IssueCategory @default(BUG_REPORT)
+  assignees   Assignees[]
+  comments    Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id               String      @id @default(uuid())
+  email            String      @unique
+  displayName      String
+  password         String
+  comments         Comment[]
+  assignedProjects Assignees[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Assignees {
+  userId  String
+  issueId String
+  user    User   @relation(fields: [userId], references: [id])
+  issue   Issue  @relation(fields: [issueId], references: [id])
+
+  @@id([userId, issueId])
+}
+
+enum IssueCategory {
+  BUG_REPORT
+  FEATURE_REQUEST
+}
+
+enum IssueStatus {
+  OPEN
+  CLOSED
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  text    String
+  issueId String
+  userId  String
+
+  issue     Issue @relation(fields: [issueId], references: [id])
+  commentor User  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
