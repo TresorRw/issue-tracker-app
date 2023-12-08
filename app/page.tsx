@@ -10,7 +10,7 @@ export default function Home() {
       <div className="active-links flex p-5 gap-5 text-blue-600">
         <Link href={"/login"}>/login</Link>
         <Link href={"/register"}>/register</Link>
-        <Link href={"/dashoard"}>/dashboard</Link>
+        <Link href={"/dashboard"}>/dashboard</Link>
         <Link href={"/dashboard/issues"}>/dashboard/isues</Link>
         <Link href={"/dashboard/users"}>/dashboard/users</Link>
         <Link href={"/dashboard/issues/new"}>/dashboard/issues/new</Link>

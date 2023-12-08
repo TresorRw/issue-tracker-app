@@ -19,6 +19,7 @@ export async function createIssue(formData: FormData) {
   try {
     await prisma.issue.create({ data: newIssueData });
     revalidatePath('/dashboard/issues')
+    revalidatePath('/dashboard')
     return { success: true, message: 'Issue is added successfully' };
   } catch (error: any) {
     return { success: false, message: `Something went wrong ${error.message}` }
@@ -52,6 +53,7 @@ export async function DeleteIssue(formData: FormData) {
   try {
     await prisma.issue.delete({ where: { id: id as string } });
     revalidatePath('/dashboard/issues')
+    revalidatePath('/dashboard')
     return { success: true, message: 'Issue deleted successfully' }
   } catch (error) {
     return { success: false, message: 'Issue failed to be deleted' }
@@ -83,5 +85,17 @@ export async function RemoveAssignee({ userId, issueId }: { userId: string, issu
     return { success: true, message: ['Unassigned successfully'] }
   } catch (error) {
     return { success: false, message: ['Failed to unassign'] }
+  }
+}
+
+export async function CloseIssueAction(issueId: string) {
+  try {
+    await prisma.issue.update({ where: { id: issueId }, data: { status: 'CLOSED' } });
+    revalidatePath(`/dashboard/issues/${issueId}`)
+    revalidatePath(`/dashboard/issues`)
+    revalidatePath(`/dashboard`)
+    return { success: true, message: ['Issue closed successfully'] }
+  } catch (error) {
+    return { success: false, message: ['Failed to update status'] }
   }
 }
