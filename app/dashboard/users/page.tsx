@@ -1,17 +1,24 @@
 import UsersSkeleton from "@/components/skeletons/Users";
 import prisma from "@/prisma/client"
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 async function fetchUsers() {
   return await prisma.user.findMany({ select: { displayName: true, email: true, createdAt: true, assignedProjects: true }, orderBy: { createdAt: 'desc' } });
 }
+
+export const metadata: Metadata = {
+  title: "Users ~ Issue Tracker APP",
+  description: 'Page with table of users of system'
+}
+
 const UsersPage = async () => {
   const users = await fetchUsers();
   return (
     <Suspense fallback={<UsersSkeleton />}>
       <div className='p-5 md:p-5 lg:p-10'>
         <h3 className="text-xl">Users</h3>
-        <table className="table table-pin-cols table-zebra max-w-[780px] w-full my-4">
+        <table className="table table-zebra max-w-[780px] w-full my-4">
           <tr className="bg-primary text-white">
             <th>#</th>
             <th>Names</th>

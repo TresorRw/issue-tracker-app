@@ -9,6 +9,12 @@ import Comment from '@/components/Comment';
 import { Suspense } from 'react';
 import CommentsSkeleton from '@/components/skeletons/CommentsSkeleton';
 import UserList from '@/components/skeletons/UserList';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Issue Details ~ Issue Tracker APP",
+  description: 'Issue details page'
+}
 
 const IssuePage = async ({ params }: { params: { id: string } }) => {
   const issue = await prisma.issue.findUnique({ where: { id: params.id } });

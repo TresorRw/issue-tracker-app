@@ -1,6 +1,7 @@
 import Stat from "@/components/dashboard/card"
 import DashboardSkeletonUI from "@/components/skeletons/dashboard";
 import prisma from "@/prisma/client"
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 async function countIssuesWithStatus() {
@@ -13,6 +14,11 @@ async function countIssues() {
 
 async function countUsers() {
   return await prisma.user.count();
+}
+
+export const metadata: Metadata = {
+  title: "Dashboard ~ Issue Tracker APP",
+  description: 'System summary page'
 }
 
 const Dashboard = async () => {

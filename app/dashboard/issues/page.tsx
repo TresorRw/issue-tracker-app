@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Suspense } from 'react';
 import Issues from '@/components/Issues';
 import IssuesSkeleton from '@/components/skeletons/Issues';
+import type { Metadata } from 'next';
 
 async function getIssues(params: any) {
   if (params.status) {
@@ -12,6 +13,11 @@ async function getIssues(params: any) {
     return await prisma.issue.findMany({ where: { category: params.category }, orderBy: { createdAt: 'desc' } })
   }
   return await prisma.issue.findMany({ where: { status: 'OPEN' }, orderBy: { createdAt: 'desc' } });
+}
+
+export const metadata: Metadata = {
+  title: "Issues Page ~ Issue Tracker APP",
+  description: 'All issues page'
 }
 
 const page = async ({ searchParams }: { searchParams: any }) => {

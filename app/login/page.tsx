@@ -2,8 +2,14 @@
 import { LogUser } from "@/app/actions/auth"
 import UserForm from "@/components/UserForm"
 import { LoginUser } from "@/interfaces"
+import type { Metadata } from "next"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
+
+export const metadata: Metadata = {
+  title: "Log into your accout ~ Issue Tracker APP",
+  description: 'Login Page'
+}
 
 const UserLoginPage = () => {
   const router = useRouter()
