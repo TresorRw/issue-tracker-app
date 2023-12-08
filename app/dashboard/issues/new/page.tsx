@@ -2,14 +2,8 @@
 
 import { createIssue } from '@/app/actions';
 import IssueForm from '@/components/IssueForm';
-import { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-
-export const metadata: Metadata = {
-  title: "Create new issue ~ Issue Tracker APP",
-  description: 'Create a new issue page'
-}
 
 const NewIssuePage: React.FC = () => {
   const router = useRouter();

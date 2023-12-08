@@ -2,14 +2,8 @@
 import { RegisterUser } from "@/app/actions/auth"
 import UserForm from "@/components/UserForm"
 import { NewUser } from "@/interfaces"
-import type { Metadata } from "next"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
-
-export const metadata: Metadata = {
-  title: "Create Your Account at Issue Tracker",
-  description: 'Page for creating an account on issue tracker web app'
-}
 
 const UserRegister = () => {
   const router = useRouter()

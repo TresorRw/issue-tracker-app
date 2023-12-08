@@ -1,6 +1,8 @@
 const Loading = () => {
   return (
-    <h1>Loading</h1>
+    <div className="h-screen flex justify-center items-center">
+      <progress className="progress w-1/3"></progress>
+    </div>
   )
 }
 
