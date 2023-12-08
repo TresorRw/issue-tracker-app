@@ -18,13 +18,6 @@ export interface IssueFormProps {
   title: string
 }
 
-export interface ButtonProps {
-  type: "button" | "reset" | "submit"
-  className: string
-  disabled?: boolean
-  text: string
-}
-
 export interface AssignedUser {
   user: User
 }
