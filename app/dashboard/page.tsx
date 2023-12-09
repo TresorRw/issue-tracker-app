@@ -4,16 +4,21 @@ import prisma from "@/prisma/client"
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-async function countIssuesWithStatus() {
-  return await prisma.issue.groupBy({ by: 'status', _count: true })
-}
-
-async function countIssues() {
-  return await prisma.issue.groupBy({ by: 'category', _count: true });
+function addAndReturnCount(acc: number, current: { _count: number }) {
+  return acc + current._count;
 }
 
 async function countUsers() {
-  return await prisma.user.count();
+  return await prisma.user.count()
+}
+
+async function countClosedIssues(): Promise<{ open: number, closed: number, bugReports: number, featureRequest: number }> {
+  const data = await prisma.issue.groupBy({ by: ['status', 'category'], _count: true })
+  const open = data.filter(record => record.status == "OPEN").reduce(addAndReturnCount, 0)
+  const closed = data.filter(record => record.status == "CLOSED").reduce(addAndReturnCount, 0)
+  const bugReports = data.filter(record => record.category == "BUG_REPORT").reduce(addAndReturnCount, 0)
+  const featureRequest = data.filter(record => record.category == "FEATURE_REQUEST").reduce(addAndReturnCount, 0)
+  return { open, closed, bugReports, featureRequest }
 }
 
 export const metadata: Metadata = {
@@ -22,30 +27,18 @@ export const metadata: Metadata = {
 }
 
 const Dashboard = async () => {
-  const categorizedIssues = await countIssues();
-  const users = await countUsers();
-  const statusIssues = await countIssuesWithStatus();
+  const issues = await countClosedIssues()
+  const users = await countUsers()
+
   return (
     <Suspense fallback={<DashboardSkeletonUI />}>
       <div className="p-10">
         <div className="flex flex-wrap gap-3">
           <Stat title="USERS" count={users} url="/dashboard/users" />
-          {categorizedIssues.map((stats, i) => (
-            <Stat
-              key={i}
-              title={stats.category.replace('_', ' ')}
-              count={stats._count}
-              url={`/dashboard/issues?category=${stats.category}`}
-            />
-          ))}
-          {statusIssues.map((stats, i) => (
-            <Stat
-              key={i}
-              title={stats.status + ' ISSUES'}
-              count={stats._count}
-              url={`/dashboard/issues?status=${stats.status}`}
-            />
-          ))}
+          <Stat title="OPEN ISSUES" count={issues.open} url="/dashboard/issues?status=OPEN" />
+          <Stat title="CLOSED ISSUES" count={issues.closed} url="/dashboard/issues?status=CLOSED" />
+          <Stat count={issues.featureRequest} title="FEATURE REQUEST" url="/dashboard/issues?category=FEATURE_REQUEST" />
+          <Stat count={issues.bugReports} title="BUG REPORT" url="/dashboard/issues?category=BUG_REPORT" />
         </div>
       </div>
     </Suspense>
