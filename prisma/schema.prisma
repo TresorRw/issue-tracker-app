@@ -38,8 +38,8 @@ model User {
 model Assignees {
   userId  String
   issueId String
-  user    User   @relation(fields: [userId], references: [id])
-  issue   Issue  @relation(fields: [issueId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
 
   @@id([userId, issueId])
 }
