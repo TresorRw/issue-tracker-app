@@ -11,6 +11,8 @@ export interface Issue {
   status?: string,
   category?: string,
   createdAt?: Date
+  updatedAt?: Date
+  creator?: User
 }
 
 export interface IssueFormProps {
