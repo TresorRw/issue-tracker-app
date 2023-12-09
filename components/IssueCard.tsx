@@ -17,6 +17,7 @@ const IssueCard = ({ issue }: { issue: Issue }) => {
           <div className="badge badge-outline">{issue.category}</div>
         </div>
         <p className='text-justify mt-5'>{issue.description!.substring(0, 200)} (...)</p>
+        <p className='mt-5 font-semibold'>By {issue.creator?.displayName}</p>
       </div>
     </div>
   )
