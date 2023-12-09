@@ -7,7 +7,7 @@ export default function Home() {
       <progress className="progress w-1/3"></progress>
       <h3>Still in Development </h3>
       <h4>Available Routes for now</h4>
-      <div className="active-links flex p-5 gap-5 text-blue-600">
+      <div className="active-links flex p-5 gap-5 flex-wrap text-blue-600">
         <Link href={"/login"}>/login</Link>
         <Link href={"/register"}>/register</Link>
         <Link href={"/dashboard"}>/dashboard</Link>

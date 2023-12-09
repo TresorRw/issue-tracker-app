@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 async function fetchUsers() {
-  return await prisma.user.findMany({ select: { displayName: true, email: true, createdAt: true, assignedProjects: true }, orderBy: { createdAt: 'desc' } });
+  return await prisma.user.findMany({ select: { displayName: true, email: true, createdAt: true, createdIssues: true, assignedProjects: true }, orderBy: { createdAt: 'desc' } });
 }
 
 export const metadata: Metadata = {
@@ -23,7 +23,8 @@ const UsersPage = async () => {
             <th>#</th>
             <th>Names</th>
             <th>Email</th>
-            <th>N <sup><u>o</u></sup> of Projects</th>
+            <th>Assigned Projects</th>
+            <th>Created Projects</th>
             <th>Joined At</th>
           </tr>
           <tbody>
@@ -33,6 +34,7 @@ const UsersPage = async () => {
                 <td className="table-cell">{user.displayName}</td>
                 <td className="table-cell">{user.email}</td>
                 <td className="table-cell">{user.assignedProjects.length}</td>
+                <td className="table-cell">{user.createdIssues.length}</td>
                 <td className="table-cell">{new Date(user.createdAt).toLocaleString()}</td>
               </tr>
             ))}
