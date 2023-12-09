@@ -5,8 +5,10 @@ import prisma from "@/prisma/client"
 import { NewIssueSchema, UpdateIssueSchema } from "@/validationSchemas";
 import { IssueCategory } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 export async function createIssue(formData: FormData) {
+  const creatorId = cookies().get('userId')?.value as string;
   const title = formData.get('title')?.toString() as string;
   const description = formData.get('description')?.toString() as string;
   const category = formData.get('category')?.toString() as IssueCategory;
@@ -17,7 +19,7 @@ export async function createIssue(formData: FormData) {
     return { success: false, message: 'Please fill in all required fields', errors: returnError(validation.error.errors) };
   }
   try {
-    await prisma.issue.create({ data: newIssueData });
+    await prisma.issue.create({ data: { ...validation.data, creatorId } });
     revalidatePath('/dashboard/issues')
     revalidatePath('/dashboard')
     return { success: true, message: 'Issue is added successfully' };
