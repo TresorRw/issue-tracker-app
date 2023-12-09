@@ -13,9 +13,11 @@ model Issue {
   description String        @db.Text()
   status      IssueStatus   @default(OPEN)
   category    IssueCategory @default(BUG_REPORT)
+  creatorId   String
   assignees   Assignees[]
   comments    Comment[]
 
+  creator   User     @relation(fields: [creatorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -27,6 +29,7 @@ model User {
   password         String
   comments         Comment[]
   assignedProjects Assignees[]
+  createdIssues    Issue[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
