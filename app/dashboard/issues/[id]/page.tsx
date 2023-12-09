@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 const IssuePage = async ({ params }: { params: { id: string } }) => {
-  const issue = await prisma.issue.findUnique({ where: { id: params.id } });
+  const issue = await prisma.issue.findUnique({ where: { id: params.id }, include: { creator: { select: { displayName: true } } } });
   const response = await prisma.user.findMany({ select: { id: true, email: true, displayName: true } });
   const options = response.map((user) => ({ label: user.displayName, value: user.id }))
 
@@ -35,12 +35,14 @@ const IssuePage = async ({ params }: { params: { id: string } }) => {
         </div>
         <div className="badge badge-primary">{issue?.status}</div>
         <div className="badge badge-outline mx-5 mb-5">{issue?.category}</div>
+        <p className="my-2">Opened by <span className="font-semibold"> {issue?.creator.displayName} </span></p>
         <p className="text-justify">{issue?.description}</p>
         <p className="my-3 text-black">Created On: {new Date(issue?.createdAt || new Date()).toLocaleString()}</p>
         <p>Comments</p>
         <Suspense fallback={<CommentsSkeleton />}>
           <Comment issueId={issue?.id} />
         </Suspense>
+        {issue?.status == "CLOSED" && <p>Closed on {new Date(issue.updatedAt).toLocaleString()}</p>}
         {issue?.status === "OPEN" && <CommentForm issueId={issue?.id} />}
         <EditIssueModal id={issue?.id} title={issue?.title} category={issue?.category} description={issue?.description} />
         <DeleteForm id={issue?.id} />

@@ -7,12 +7,12 @@ import type { Metadata } from 'next';
 
 async function getIssues(params: any) {
   if (params.status) {
-    return await prisma.issue.findMany({ where: { status: params.status }, orderBy: { createdAt: 'desc' } })
+    return await prisma.issue.findMany({ where: { status: params.status }, include: { creator: { select: { id: true, displayName: true, email: true } } }, orderBy: { createdAt: 'desc' } })
   }
   if (params.category) {
-    return await prisma.issue.findMany({ where: { category: params.category }, orderBy: { createdAt: 'desc' } })
+    return await prisma.issue.findMany({ where: { category: params.category }, include: { creator: { select: { id: true, displayName: true, email: true } } }, orderBy: { createdAt: 'desc' } })
   }
-  return await prisma.issue.findMany({ where: { status: 'OPEN' }, orderBy: { createdAt: 'desc' } });
+  return await prisma.issue.findMany({ where: { status: 'OPEN' }, include: { creator: { select: { id: true, displayName: true, email: true } } }, orderBy: { createdAt: 'desc' } });
 }
 
 export const metadata: Metadata = {
@@ -25,11 +25,10 @@ const page = async ({ searchParams }: { searchParams: any }) => {
   return (
     <div className="p-10">
       <div className="max-w-md">
-        <button className="btn btn-sm text-white hover:text-black bg-primary">
+        <button className="btn btn-md text-white hover:text-black bg-primary">
           <Link href={'/dashboard/issues/new'}>New Issue</Link>
         </button>
       </div>
-      <h1>Issues</h1>
       <Suspense fallback={<IssuesSkeleton />}>
         <Issues issues={issues} />
       </Suspense>
