@@ -11,6 +11,7 @@ import CommentsSkeleton from '@/components/skeletons/CommentsSkeleton';
 import UserList from '@/components/skeletons/UserList';
 import type { Metadata } from 'next';
 import CloseIssue from './CloseIssue';
+import { getTimeDifference } from '@/lib';
 
 export const metadata: Metadata = {
   title: "Issue Details ~ Issue Tracker APP",
@@ -36,13 +37,13 @@ const IssuePage = async ({ params }: { params: { id: string } }) => {
         <div className="badge badge-primary">{issue?.status}</div>
         <div className="badge badge-outline mx-5 mb-5">{issue?.category}</div>
         <p className="my-2">Opened by <span className="font-semibold"> {issue?.creator.displayName} </span></p>
-        <p className="text-justify">{issue?.description}</p>
-        <p className="my-3 text-black">Created On: {new Date(issue?.createdAt || new Date()).toLocaleString()}</p>
+        <p className="text-justify my-2">{issue?.description}</p>
+        <p className="my-3 text-black">Created: {getTimeDifference(issue?.createdAt || new Date())}</p>
         <p>Comments</p>
         <Suspense fallback={<CommentsSkeleton />}>
           <Comment issueId={issue?.id} />
         </Suspense>
-        {issue?.status == "CLOSED" && <p>Closed on {new Date(issue.updatedAt).toLocaleString()}</p>}
+        {issue?.status == "CLOSED" && <p>Closed on {getTimeDifference(issue.updatedAt)}</p>}
         {issue?.status === "OPEN" && <CommentForm issueId={issue?.id} />}
         <EditIssueModal id={issue?.id} title={issue?.title} category={issue?.category} description={issue?.description} />
         <DeleteForm id={issue?.id} />

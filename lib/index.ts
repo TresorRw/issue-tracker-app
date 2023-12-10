@@ -1,3 +1,4 @@
+export * from './date'
 export * from './passwords'
 
 export function returnError(error: any) {
