@@ -1,3 +1,4 @@
+import Chart from "@/components/dashboard/Chart";
 import Stat from "@/components/dashboard/card"
 import DashboardSkeletonUI from "@/components/skeletons/dashboard";
 import prisma from "@/prisma/client"
@@ -12,7 +13,7 @@ async function countUsers() {
   return await prisma.user.count()
 }
 
-async function countClosedIssues(): Promise<{ open: number, closed: number, bugReports: number, featureRequest: number }> {
+async function issuesCounter(): Promise<{ open: number, closed: number, bugReports: number, featureRequest: number }> {
   const data = await prisma.issue.groupBy({ by: ['status', 'category'], _count: true })
   const open = data.filter(record => record.status == "OPEN").reduce(addAndReturnCount, 0)
   const closed = data.filter(record => record.status == "CLOSED").reduce(addAndReturnCount, 0)
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 }
 
 const Dashboard = async () => {
-  const issues = await countClosedIssues()
+  const issues = await issuesCounter()
   const users = await countUsers()
 
   return (
@@ -39,6 +40,9 @@ const Dashboard = async () => {
           <Stat title="CLOSED ISSUES" count={issues.closed} url="/dashboard/issues?status=CLOSED" />
           <Stat count={issues.featureRequest} title="FEATURE REQUEST" url="/dashboard/issues?category=FEATURE_REQUEST" />
           <Stat count={issues.bugReports} title="BUG REPORT" url="/dashboard/issues?category=BUG_REPORT" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Chart />
         </div>
       </div>
     </Suspense>

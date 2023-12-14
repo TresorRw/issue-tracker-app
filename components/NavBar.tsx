@@ -47,7 +47,7 @@ const NavBar = () => {
             <Menus currentPath={currentPath} />
           </ul>
         </div>
-        <Link href={'/dashboard'} className="text-xl">Tracker</Link>
+        <Link href={'/dashboard'} className="text-xl">Issue Tracker</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
