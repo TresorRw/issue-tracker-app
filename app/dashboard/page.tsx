@@ -33,7 +33,7 @@ const Dashboard = async () => {
   return (
     <Suspense fallback={<DashboardSkeletonUI />}>
       <div className="p-10">
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           <Stat title="USERS" count={users} url="/dashboard/users" />
           <Stat title="OPEN ISSUES" count={issues.open} url="/dashboard/issues?status=OPEN" />
           <Stat title="CLOSED ISSUES" count={issues.closed} url="/dashboard/issues?status=CLOSED" />

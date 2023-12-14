@@ -13,6 +13,7 @@ export default function Home() {
         <Link href={"/dashboard"}>/dashboard</Link>
         <Link href={"/dashboard/issues"}>/dashboard/isues</Link>
         <Link href={"/dashboard/users"}>/dashboard/users</Link>
+        <Link href={"/dashboard/profile"}>/dashboard/profile</Link>
         <Link href={"/dashboard/issues/new"}>/dashboard/issues/new</Link>
         <Link href={"/dashboard/issues/issue-id"}>/dashboard/issues/[id]</Link>
       </div>

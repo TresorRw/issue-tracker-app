@@ -7,16 +7,17 @@ import { Logout } from "@/app/actions/auth";
 
 function Menus({ currentPath }: { currentPath: string }) {
   const menus = [
-    { href: '/dashboard', label: 'Dashboard', pages: [''] },
-    { href: '/dashboard/issues', label: 'Issues', pages: ['/dashboard/issues/new'] },
-    { href: '/dashboard/users', label: 'Users', pages: ['/dashboard/users'] },
+    { href: '/dashboard', label: 'Dashboard'},
+    { href: '/dashboard/issues', label: 'Issues'},
+    { href: '/dashboard/users', label: 'Users'},
+    { href: '/dashboard/profile', label: 'Profile'},
   ]
   return (
     menus.map((menu) => (
       <li key={menu.href} className="mx-2 rounded-sm">
         <Link
           className={classNames({
-            'bg-primary text-white': currentPath === menu.href || menu.pages.includes(currentPath),
+            'bg-primary text-white': menu.href == currentPath,
           })}
           href={menu.href}
         >
@@ -30,7 +31,7 @@ function Menus({ currentPath }: { currentPath: string }) {
 const NavBar = () => {
   const currentPath = usePathname();
   const router = useRouter();
-  const logout = async() => {
+  const logout = async () => {
     await Logout()
     router.push('/');
   }
