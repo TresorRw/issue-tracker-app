@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
-// import { Inter } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css'
 import { Toaster } from 'react-hot-toast';
-
-// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Tracker Project',
@@ -19,6 +17,7 @@ export default function RootLayout({
     <html lang="en" data-theme='winter'>
       <body className="">
         {children}
+        <SpeedInsights />
         <Toaster position='top-right' />
       </body>
     </html>
