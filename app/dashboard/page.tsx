@@ -1,4 +1,4 @@
-import Chart from "@/components/dashboard/Chart";
+// import Chart from "@/components/dashboard/Chart";
 import Stat from "@/components/dashboard/card"
 import DashboardSkeletonUI from "@/components/skeletons/dashboard";
 import prisma from "@/prisma/client"
@@ -42,7 +42,7 @@ const Dashboard = async () => {
           <Stat count={issues.bugReports} title="BUG REPORT" url="/dashboard/issues?category=BUG_REPORT" />
         </div>
         <div className="flex flex-wrap gap-2">
-          <Chart />
+          {/* <Chart /> */}
         </div>
       </div>
     </Suspense>
